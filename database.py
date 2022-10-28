@@ -33,3 +33,26 @@ class Database:
         :return: sqlite3.Cursor
         """
         return self.create_connection_to_db().cursor()
+
+    def create_table(self, table_name: str) -> None:
+        """
+        Method to create table with specified columns: id, email, name
+        book_title, return_at. Command to create table is in SQL.
+        :param table_name:
+        :return: None
+        """
+        create_table_sql_query = f"""CREATE TABLE IF NOT EXISTS {table_name} (
+                            id INTEGER PRIMARY KEY AUTOINCREMENT,
+                            email TEXT NOT NULL,
+                            name TEXT NOT NULL,
+                            book_title TEXT NOT NULL,
+                            return_at DATE NOT NULL
+                            );
+                            """
+        self.cursor.execute(create_table_sql_query)
+        logging.info(create_table_sql_query)
+        logging.info(f"Table {table_name} was created successfully")
+
+
+db = Database("baza")
+db.create_table("ksiazki")
