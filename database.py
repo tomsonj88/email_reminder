@@ -17,3 +17,13 @@ class Database:
     def __str__(self):
         # ToDo: change this __str__ class
         return f"Database: {self.name}.db"
+
+    def create_connection_to_db(self):
+        """
+        Create connection to database
+        :return: Connection object
+        """
+        with sqlite3.connect(f"{self.name}.db") as connection:
+            return connection
+
+
