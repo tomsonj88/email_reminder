@@ -18,12 +18,18 @@ class Database:
         # ToDo: change this __str__ class
         return f"Database: {self.name}.db"
 
-    def create_connection_to_db(self):
+    def create_connection_to_db(self) -> sqlite3.Connection:
         """
         Create connection to database
-        :return: Connection object
+        :return: sqlite3.Connection
         """
         with sqlite3.connect(f"{self.name}.db") as connection:
             return connection
 
-
+    def create_cursor_to_db(self) -> sqlite3.Cursor:
+        """
+        Create database cursor in order to execute SQL statements
+        and fetch results from SQL queries
+        :return: sqlite3.Cursor
+        """
+        return self.create_connection_to_db().cursor()
