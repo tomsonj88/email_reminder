@@ -11,8 +11,8 @@ logging.basicConfig(format="%(asctime)s %(name)s %(levelname)s %(message)s", lev
 class Database:
     def __init__(self, name):
         self.name = name
-        self.cursor = self.create_cursor_to_db()
         self.connection = self.create_connection_to_db()
+        self.cursor = self.create_cursor_to_db()
 
     def __str__(self):
         # ToDo: change this __str__ class
@@ -32,7 +32,7 @@ class Database:
         and fetch results from SQL queries
         :return: sqlite3.Cursor
         """
-        return self.create_connection_to_db().cursor()
+        return self.connection.cursor()
 
     def create_table(self, table_name: str) -> None:
         """
@@ -52,7 +52,3 @@ class Database:
         self.cursor.execute(create_table_sql_query)
         logging.info(create_table_sql_query)
         logging.info(f"Table {table_name} was created successfully")
-
-
-db = Database("baza")
-db.create_table("ksiazki")
