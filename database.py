@@ -84,3 +84,18 @@ class Database:
 
             self.cursor.execute(insert_sql_query)
             self.connection.commit()
+
+    def delete_row(self, table_name: str, name: str, book_title: str) -> None:
+        """
+        Method can delete rows, when table contain specified params: name
+        and book_title.
+        :param table_name: str
+        :param name: str
+        :param book_title: str
+        :return: None
+        """
+        delete_sql_query = f"""DELETE FROM {table_name} 
+            WHERE name="{name}" AND book_title="{book_title}"
+        """
+        self.cursor.execute(delete_sql_query)
+        self.connection.commit()
