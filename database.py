@@ -17,14 +17,14 @@ class Database:
 
     def __str__(self):
         # ToDo: change this __str__ class
-        return f"Database: {self.name}.db"
+        return f"Database: {self.name}"
 
     def create_connection_to_db(self) -> sqlite3.Connection:
         """
         Create connection to database
         :return: sqlite3.Connection
         """
-        with sqlite3.connect(f"{self.name}.db") as connection:
+        with sqlite3.connect(f"{self.name}") as connection:
             return connection
 
     def create_cursor_to_db(self) -> sqlite3.Cursor:
@@ -99,3 +99,28 @@ class Database:
         """
         self.cursor.execute(delete_sql_query)
         self.connection.commit()
+
+    def show_all_rows(self, table_name: str) -> list:
+        """
+        Show all rows in table specified in params
+        :param table_name:
+        :return: list
+        """
+        show_rows_sql_query = f"""SELECT * from {table_name}"""
+        self.cursor.execute(show_rows_sql_query)
+        return self.cursor.fetchall()
+
+    def show_who_didnt_back_book(self, table_name: str) -> list:
+        """
+        Show rows  with exceeded deadline for book return. If current
+        date is later than "return_at" field in database, then these rows
+        will be display and return.
+        :param table_name: str
+        :return: list
+        """
+        show_rows_sql_query = f"""SELECT * FROM {table_name}
+        WHERE return_at < current_timestamp   
+        """
+        self.cursor.execute(show_rows_sql_query)
+        result = self.cursor.fetchall()
+        return result
