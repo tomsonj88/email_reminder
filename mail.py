@@ -1,5 +1,4 @@
 import smtplib
-import ssl
 
 
 class MailBox:

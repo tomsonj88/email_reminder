@@ -110,7 +110,7 @@ class Database:
         self.cursor.execute(show_rows_sql_query)
         return self.cursor.fetchall()
 
-    def show_who_didnt_back_book(self, table_name: str) -> list:
+    def show_who_didnt_return_book(self, table_name: str) -> list:
         """
         Show rows  with exceeded deadline for book return. If current
         date is later than "return_at" field in database, then these rows

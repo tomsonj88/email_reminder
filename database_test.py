@@ -62,7 +62,7 @@ def test_find_books_debtor():
     should return book (return_at column) and compare it with current
     timestamp. If date was exceed then should return these records
     """
-    debtors = database.show_who_didnt_back_book(table_name)
+    debtors = database.show_who_didnt_return_book(table_name)
     debtor_book = (3, 'test2@onet.pl', 'Jesus Navas', 'Rainmaker',
                    '2020-03-16')
     assert debtor_book in debtors
