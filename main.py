@@ -23,5 +23,8 @@ if __name__ == "__main__":
                       )
     db = Database("database.db")
     book_debtor_data = db.show_who_didnt_return_book("books")
-    mailbox.send_email_to_book_debtor(book_debtor_data)
+    mailbox.send_email_for_return_book(book_debtor_data)
     logging.info("DONE")
+
+    print(db.show_rows_6_days_before_return("books"))
+    mailbox.send_remainder(db.show_rows_6_days_before_return("books"))

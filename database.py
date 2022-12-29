@@ -1,6 +1,7 @@
 """
 DATABASE module
 """
+from os import getenv
 
 import sqlite3
 import logging
@@ -124,3 +125,11 @@ class Database:
         self.cursor.execute(show_rows_sql_query)
         result = self.cursor.fetchall()
         return result
+
+    def show_rows_6_days_before_return(self, table_name):
+        remaind_days_before = getenv("REMAINDER")
+        show_rows_for_remaind_sql_query = f"""SELECT *,
+        DATE(return_at, "-{remaind_days_before} day")
+        as diff FROM {table_name} WHERE diff = DATE()"""
+        result = self.cursor.execute(show_rows_for_remaind_sql_query)
+        return result.fetchall()
