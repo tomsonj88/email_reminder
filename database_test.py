@@ -1,6 +1,14 @@
 """ Tests for Database class """
+from os import getenv
+from datetime import date, datetime, timedelta
+
+from dotenv import load_dotenv
+
 from database import Database
 
+load_dotenv()
+reminder_days = float(getenv("REMINDER"))
+date_shifted = date.today() + timedelta(days=reminder_days)
 table_name = "books"
 database = Database(":memory:")
 database.create_table(table_name)
@@ -15,7 +23,11 @@ records = [{"email": "for_test_only@gmail.com",
            {"email": "test2@onet.pl",
             "name": "Jesus Navas",
             "book_title": "Rainmaker",
-            "return_at": "2020-03-16"}
+            "return_at": "2020-03-16"},
+           {"email": "for_test_only@gmail.com",
+            "name": "Kylian Mbappe",
+            "book_title": "Potop",
+            "return_at": date_shifted}
            ]
 database.add_row(table_name, records)
 
@@ -28,7 +40,7 @@ def test_check_if_all_row_was_added():
     count_row_sql_query = f"""SELECT COUNT(name) FROM {table_name}"""
     counter = database.cursor.execute(count_row_sql_query)
     result = counter.fetchone()[0]
-    assert result == 3
+    assert result == 4
 
 
 def test_check_method_show_all_rows():
@@ -66,3 +78,12 @@ def test_find_books_debtor():
     debtor_book = (3, 'test2@onet.pl', 'Jesus Navas', 'Rainmaker',
                    '2020-03-16')
     assert debtor_book in debtors
+
+
+def test_show_reminder():
+    reminder_days = float(getenv("REMINDER"))
+    data = database.show_rows_x_days_before_return("books")
+    return_date = data[0][4]
+    diff = datetime.strptime(return_date, "%Y-%m-%d") - datetime.today()
+    counted_reminder_days = diff.days + 1
+    assert counted_reminder_days == reminder_days

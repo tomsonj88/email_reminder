@@ -23,7 +23,6 @@ class Mail:
         return msg.as_string()
 
 
-
 class MailBox:
     def __init__(self,
                  username,
@@ -74,9 +73,9 @@ class MailBox:
                 logging.error(f"The SMTP server refused to accept the message "
                               f"data. Email to {name} has not been sent")
 
-    def send_remainder(self, database_data):
+    def send_reminder(self, database_data):
         from_address = getenv("EMAIL")
-        subject = "Remainder"
+        subject = "Reminder"
         for element in range(len(database_data)):
             to_address, name, book, return_date = prepare_db_data(
                 database_data, element)
@@ -87,28 +86,11 @@ class MailBox:
             message = msg_template.substitute(name=name,
                                               book=book,
                                               return_date=return_date,
-                                              days=getenv("REMAINDER")
+                                              days=getenv("REMINDER")
                                               )
             mail = Mail(from_address, to_address, message, subject)
             self.send(mail)
-            logging.info(f"Remainder to {name} has been sent")
-
-
-def create_message(from_address, to_address, name, book, return_date):
-    message_template = Template("Hi $name.\n I lent you book: $book. "
-                                "You promise me to return it till "
-                                "$return_date. Please return it.\nBR\n"
-                                )
-    message = message_template.substitute(name=name,
-                                          book=book,
-                                          return_date=return_date
-                                          )
-    msg = EmailMessage()
-    msg.set_content(message)
-    msg["Subject"] = "Please return my book "
-    msg["From"] = from_address
-    msg["To"] = to_address
-    return msg.as_string()
+            logging.info(f"Reminder to {name} has been sent")
 
 
 def prepare_db_data(db_data, index):

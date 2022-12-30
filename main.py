@@ -26,5 +26,4 @@ if __name__ == "__main__":
     mailbox.send_email_for_return_book(book_debtor_data)
     logging.info("DONE")
 
-    print(db.show_rows_6_days_before_return("books"))
-    mailbox.send_remainder(db.show_rows_6_days_before_return("books"))
+    mailbox.send_reminder(db.show_rows_x_days_before_return("books"))
