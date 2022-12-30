@@ -9,6 +9,9 @@ import logging
 logging.basicConfig(format="%(asctime)s %(name)s %(levelname)s %(message)s",
                     level=logging.INFO)
 
+logger_sql = logging.getLogger("SQL_query")
+logger_sql.setLevel("INFO")
+
 
 class Database:
     def __init__(self, name):
@@ -52,7 +55,7 @@ class Database:
                             );
                             """
         self.cursor.execute(create_table_sql_query)
-        logging.info(create_table_sql_query)
+        logger_sql.info(create_table_sql_query)
         logging.info(f"Table {table_name} was created successfully")
 
     def add_row(self, table_name: str, records_to_added: list[dict]) -> None:
@@ -84,6 +87,7 @@ class Database:
             )"""
 
             self.cursor.execute(insert_sql_query)
+            logger_sql.info(insert_sql_query)
             self.connection.commit()
 
     def delete_row(self, table_name: str, name: str, book_title: str) -> None:
@@ -99,6 +103,7 @@ class Database:
             WHERE name="{name}" AND book_title="{book_title}"
         """
         self.cursor.execute(delete_sql_query)
+        logger_sql.info(delete_sql_query)
         self.connection.commit()
 
     def show_all_rows(self, table_name: str) -> list:
@@ -109,6 +114,7 @@ class Database:
         """
         show_rows_sql_query = f"""SELECT * from {table_name}"""
         self.cursor.execute(show_rows_sql_query)
+        logger_sql.info(show_rows_sql_query)
         return self.cursor.fetchall()
 
     def show_who_didnt_return_book(self, table_name: str) -> list:
@@ -124,12 +130,14 @@ class Database:
         """
         self.cursor.execute(show_rows_sql_query)
         result = self.cursor.fetchall()
+        logger_sql.info(show_rows_sql_query)
         return result
 
     def show_rows_x_days_before_return(self, table_name):
         remind_days_before = getenv("REMINDER")
         show_rows_for_remind_sql_query = f"""SELECT *,
-        DATE(return_at, "-{remind_days_before} day")
-        as diff FROM {table_name} WHERE diff = DATE()"""
+        DATE(return_at, "-{remind_days_before} day") as diff
+        FROM {table_name} WHERE diff = DATE()"""
         result = self.cursor.execute(show_rows_for_remind_sql_query)
+        logger_sql.info(show_rows_for_remind_sql_query)
         return result.fetchall()
