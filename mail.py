@@ -99,8 +99,3 @@ def prepare_db_data(db_data, index):
     book = db_data[index][3]
     return_date = db_data[index][4]
     return to_address, name, book, return_date
-
-
-
-
-
