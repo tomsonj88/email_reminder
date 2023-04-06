@@ -30,7 +30,7 @@ def create_table(connection, table_name: str) -> None:
     cursor = connection.cursor()
     cursor.execute(create_table_sql_query)
     logger_sql.info(create_table_sql_query)
-    logging.info(f"Table {table_name} was created successfully")
+    logging.info("Table %s was created successfully", table_name)
 
 
 def add_row(connection, table_name: str, records_to_added: list[dict]) -> None:
@@ -52,14 +52,14 @@ def add_row(connection, table_name: str, records_to_added: list[dict]) -> None:
     :return: None
     """
     cursor = connection.cursor()
-    for element in range(len(records_to_added)):
+    for element in enumerate(records_to_added):
         insert_sql_query = f"""
             INSERT INTO {table_name} (email, name, book_title, return_at)
             VALUES (
-            "{records_to_added[element]["email"]}",
-            "{records_to_added[element]["name"]}",
-            "{records_to_added[element]["book_title"]}",
-            "{records_to_added[element]["return_at"]}"
+            "{element[1]["email"]}",
+            "{element[1]["name"]}",
+            "{element[1]["book_title"]}",
+            "{element[1]["return_at"]}"
         )"""
         cursor.execute(insert_sql_query)
         logger_sql.info(insert_sql_query)
@@ -114,6 +114,13 @@ def show_who_didnt_return_book(connection, table_name: str) -> list:
 
 
 def show_rows_x_days_before_return(connection, table_name):
+    """
+    Method show rows X (value of variable reminder, set in .env file)
+    days before return book. Method is for get data to send reminder.
+    :param connection:
+    :param table_name:
+    :return:
+    """
     cursor = connection.cursor()
     remind_days_before = getenv("REMINDER")
     show_rows_for_remind_sql_query = f"""SELECT *,
