@@ -16,6 +16,7 @@ def create_table(connection, table_name: str) -> None:
     """
     Method to create table with specified columns: id, email, name
     book_title, return_at. Command to create table is in SQL.
+    :param connection: Connection
     :param table_name:
     :return: None
     """
@@ -38,6 +39,7 @@ def add_row(connection, table_name: str, records_to_added: list[dict]) -> None:
     This method can add row to table in database. Please use it only
     once or every run this method, change records_to_added param to
     avoid duplicate rows
+    :param connection: Connection
     :param table_name: str
     :param records_to_added: list[dict], example:
     records_to_added = [{"email": "for_test_only@gmail.com",
@@ -69,6 +71,7 @@ def delete_row(connection, table_name: str, name: str, book_title: str) -> None:
     """
     Method can delete rows, when table contain specified params: name
     and book_title.
+    :param connection: Connection
     :param table_name: str
     :param name: str
     :param book_title: str
@@ -85,6 +88,7 @@ def delete_row(connection, table_name: str, name: str, book_title: str) -> None:
 def show_all_rows(connection, table_name: str) -> list:
     """
     Show all rows in table specified in params
+    :param connection: Connection
     :param table_name:
     :return: list
     """
@@ -100,6 +104,7 @@ def show_who_didnt_return_book(connection, table_name: str) -> list:
     Show rows  with exceeded deadline for book return. If current
     date is later than "return_at" field in database, then these rows
     will be display and return.
+    :param connection: Connection
     :param table_name: str
     :return: list
     """
